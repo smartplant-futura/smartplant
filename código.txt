@@ -70,7 +70,7 @@ void setup() {
       tiempoRiego = 604800000UL; //7 días
       break;
 
-    case 9: // Lavanda
+    case 9: // Llama Plata
       tiempoRiego = 432000000UL; //5 días
       break;
 
