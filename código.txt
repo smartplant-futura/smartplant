@@ -1,0 +1,116 @@
+//=====================================
+// SMARTPLANT
+// Sistema de riego automático
+//=====================================
+
+//---------------
+// SELECCIONAR PLANTA
+//---------------
+
+//1 = Cactus
+//2 = Suculenta
+//3 = Aloe vera
+//4 = Helecho
+//5 = Rosa
+//6 = Albahaca
+//7 = Menta
+//8 = Orquídea
+//9 = Llama plata
+//10 = Lengua de suegra
+
+int planta = ;   // <-- Cambia solo este número
+
+int bomba = 8;
+int humedad = 0;
+
+unsigned long ultimoRiego = 0;
+unsigned long tiempoRiego = 0;
+
+void setup() {
+
+  Serial.begin(9600);
+  pinMode(bomba, OUTPUT);
+  digitalWrite(bomba, LOW);
+
+  //=========================
+  // Configuración de tiempos
+  //=========================
+
+  switch(planta){
+
+    case 1: // Cactus
+      tiempoRiego = 1209600000UL; //14 días
+      break;
+
+    case 2: // Suculenta
+      tiempoRiego = 864000000UL; //10 días
+      break;
+
+    case 3: // Aloe vera
+      tiempoRiego = 1296000000UL; //15 días
+      break;
+
+    case 4: // Helecho
+      tiempoRiego = 172800000UL; //2 días
+      break;
+
+    case 5: // Rosa
+      tiempoRiego = 172800000UL; //2 días
+      break;
+
+    case 6: // Albahaca
+      tiempoRiego = 86400000UL; //1 día
+      break;
+
+    case 7: // Menta
+      tiempoRiego = 172800000UL; //2 días
+      break;
+
+    case 8: // Orquídea
+      tiempoRiego = 604800000UL; //7 días
+      break;
+
+    case 9: // Lavanda
+      tiempoRiego = 432000000UL; //5 días
+      break;
+
+    case 10: // Lengua de suegra
+      tiempoRiego = 1209600000UL; //14 días
+      break;
+
+    default:
+      tiempoRiego = 86400000UL; //1 día por defecto
+      break;
+  }
+
+}
+
+void loop() {
+
+  humedad = analogRead(A0);
+
+  Serial.print("Humedad: ");
+  Serial.println(humedad);
+
+  // Solo riega si la tierra está seca
+  // y ya pasó el tiempo programado
+
+  if(humedad >= 721 && humedad <= 1024 &&
+     millis() - ultimoRiego >= tiempoRiego){
+
+      Serial.println("Regando...");
+
+      digitalWrite(bomba, HIGH);
+
+      delay(5000);        //Riega durante 5 segundos
+
+      digitalWrite(bomba, LOW);
+
+      ultimoRiego = millis();
+
+      Serial.println("Riego terminado");
+  }
+
+  delay(500);
+
+}
